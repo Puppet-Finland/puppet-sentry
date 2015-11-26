@@ -13,8 +13,8 @@ class sentry::params
         'libffi-dev',
         'libssl-dev',
         # Next three needed by lxml python library
-        'libxml2-dev',
-        'libxslt1-dev',
+#        'libxml2-dev',
+#        'libxslt1-dev',
         'zlib1g-dev',
       ]
 
