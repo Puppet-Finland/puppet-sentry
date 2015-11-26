@@ -10,17 +10,15 @@ class sentry::service
     "--config=${sentry::path}/sentry.conf.py"
   ], ' ')
 
-  Supervisord::Program {
-    ensure          => present,
-    directory       => $sentry::path,
-    user            => $sentry::owner,
-    autostart       => true,
-    redirect_stderr => true,
+  Supervisor::Process {
+    ensure => present,
+    cwd    => $sentry::path,
+    user   => $sentry::owner,
   }
 
   anchor { 'sentry::service::begin': } ->
 
-  supervisord::program {
+  supervisor::process {
     'sentry-http':
       command => "${command} start http",
     ;
@@ -30,13 +28,4 @@ class sentry::service
   } ->
 
   anchor { 'sentry::service::end': }
-
-  if $sentry::service_restart {
-    Anchor['sentry::service::begin'] ~>
-
-    supervisord::supervisorctl { 'sentry_reload':
-      command     => 'reload',
-      refreshonly => true,
-    }
-  }
 }
