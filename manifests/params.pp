@@ -10,8 +10,8 @@ class sentry::params
     'Debian': {
       $packages = [
         # Next two needed by requests (w/ security) python library
-        'libffi-dev',
-        'libssl-dev',
+#        'libffi-dev',
+#        'libssl-dev',
         # Next three needed by lxml python library
 #        'libxml2-dev',
 #        'libxslt1-dev',
@@ -33,10 +33,11 @@ class sentry::params
 
   # Install params
   $path            = '/srv/sentry'
+  $filestore_location = "${path}/tmp"
   $owner           = 'sentry'
   $group           = 'sentry'
   $source_location = 'pypi'
-  $version         = '7.7.0'
+  $version         = ''
   $git_revision    = 'master'
   $git_url         = 'git+https://github.com/getsentry/sentry.git'
   $timeout         = 1800
@@ -46,6 +47,7 @@ class sentry::params
   $secret_key    = 'bxXkluWCyi7vNDDALvCKOGCI2WEbohkpF9nVPnV6jWGB1grz5csT3g=='
   $email         = 'admin@localhost'
   $url           = 'http://localhost:9000'
+  $url_path      = ''
   $host          = 'localhost'
   $port          = 9000
   # http://gunicorn-docs.readthedocs.org/en/latest/design.html#how-many-workers

@@ -7,7 +7,7 @@ class sentry::service
 {
   $command = join([
     "${sentry::path}/virtualenv/bin/sentry",
-    "--config=${sentry::path}/sentry.conf.py"
+    "--config=${sentry::path}"
   ], ' ')
 
   Supervisor::Process {
@@ -23,7 +23,10 @@ class sentry::service
       command => "${command} start http",
     ;
     'sentry-worker':
-      command => "${command} celery worker -B",
+      command => "${command} run worker -l WARNING",
+    ;
+    'sentry-cron':
+      command => "${command} run cron -l WARNING",
     ;
   } ->
 

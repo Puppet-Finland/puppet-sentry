@@ -18,7 +18,7 @@
 
 The sentry module installs, configures, and manages the
 [Sentry](http://sentry.readthedocs.org/) realtime event logging and
-aggregation platform. It supports Sentry version >= 7.7.0, < 8.0.0 on
+aggregation platform. It supports Sentry version >= 8.5.0 on
 the following platforms:
 
 * Debian 7 (Wheezy)
@@ -56,7 +56,7 @@ To specify a PyPI version instead, run
 
 ```puppet
 class { 'sentry':
-  version => '7.x.x'
+  version => '8.5.0'
 }
 ```
 
@@ -135,165 +135,8 @@ values for these as the defaults are insecure.
 
 #### Class: `sentry`
 
-##### `path`
+Install Sentry server. See the documentation at `manifests/init.pp`
 
-The absolute path under which to install Sentry, defaults to `/srv/sentry`.
-
-##### `owner`
-
-The owner for Sentry files, defaults to `sentry`.
-
-##### `group`
-
-The group for Sentry files, defaults to `sentry`.
-
-##### `source_location`
-
-The source location from which to install Sentry.
-Choose from:
-
-* `pypi` PyPI (Default)
-* `git`  Git
-
-##### `version`
-
-The Sentry version to install if using PyPI, defaults to `7.7.0`.
-
-##### `git_revision`
-
-The Sentry revision to install if using Git, defaults to `master`.
-Can be branch, tag, or commit sha1.
-
-##### `git_url`
-
-The URL to install Sentry from if using Git, defaults to
-`git+https://github.com/getsentry/sentry.git`.
-
-##### `timeout`
-
-The timeout for install commands, defaults to `1800` seconds.
-
-##### `manage_git`
-
-Whether to manage git if needed for install, defaults to `true`. If `false`,
-git is expected to be preinstalled.
-
-##### `manage_nodejs`
-
-Whether to manage nodejs if needed for compiling static assets during
-git install, defaults to `true`. If `false`, nodejs and npm are expected
-to be preinstalled.
-
-##### `manage_python`
-
-Whether to manage Python for running Sentry, defaults to `true`. If `false`,
-python (w/ dev package), pip, and virtualenv are expected to be
-preinstalled.
-
-##### `extra_python_reqs`
-
-Extra Python requirements to install, in addition to and/or instead of
-what's specified in setup.py.
-
-##### `password`
-
-The password for Sentry's admin user, defaults to `password`.
-Should be at least 8 characters long.
-
-##### `secret_key`
-
-The secret key to use, should be a randomly generated 40-160 byte string.
-
-##### `email`
-
-The email address for the Sentry admin user, defaults to `admin@localhost`.
-
-##### `url`
-
-The absolute URL to access Sentry, defaults to `http://localhost:9000`.
-Must not have a trailing slash.
-
-##### `host`
-
-The hostname which the webserver should bind to, defaults to `localhost`.
-
-##### `port`
-
-The port which the webserver should listen on, defaults to `9000`.
-
-##### `workers`
-
-The number of gunicorn workers to start, default is calculated according
-to number of cores.
-
-##### `database`
-
-The database to use.
-Choose from:
-
-* `sqlite`    SQLite DB (Default)
-* `mysql`     MySQL DB
-* `postgres`  Postgres DB
-
-##### `beacon_enabled`
-
-Whether to enable support for sending
-[beacons](http://sentry.readthedocs.org/en/latest/beacon.html)
-to the Sentry team, defaults to `true`.
-
-##### `email_enabled`
-
-Whether to enable support for sending email notifications, defaults
-to `false`.
-
-##### `proxy_enabled`
-
-Whether to enable support for serving behind a reverse proxy, defaults
-to `false`.
-
-##### `redis_enabled`
-
-Whether to enable Redis support for caching and queueing worker jobs,
-defaults to `false`.
-
-##### `database_config`
-
-A hash with the database configuration, not needed for SQLite.
-Can include:
-
-* `name`      Database name (defaults to `sentry`)
-* `user`      Database user
-* `password`  Database password
-* `host`      Database host (defaults to `localhost`)
-* `port`      Database port (defaults to IANA registered port)
-
-##### `email_config`
-
-A hash with the email configuration, only needed if enabled.
-Can include:
-
-* `host`      SMTP host (defaults to `localhost`)
-* `port`      SMTP port (defaults to `25`)
-* `user`      SMTP user (defaults to none)
-* `password`  SMTP password (defaults to none)
-* `use_tls`   Whether to enable SMTP TLS (defaults to `false`)
-* `from_addr` The from address (defaults to admin email)
-
-##### `redis_config`
-
-A hash with the Redis configuration, only needed if enabled.
-Can include:
-
-* `host`      Redis host (defaults to `localhost`)
-* `port`      Redis port (defaults to `6379`)
-
-##### `extra_config`
-
-Extra configuration to append to Sentry config, can be array or string.
-
-##### `service_restart`
-
-Whether to restart Sentry on config change, defaults to `true`.
 
 ### Defines
 
@@ -327,7 +170,7 @@ The plugin version to install, defaults to latest.
 
 * Upgrades are not handled automatically, but must be
   done as documented at
-  [Upgrading](https://sentry.readthedocs.org/en/7.0.0/upgrading/index.html).
+  [Upgrading](https://docs.getsentry.com/on-premise/server/upgrading/).
 * Multiple Redis servers are not currently supported.
 
 ## Development

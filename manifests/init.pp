@@ -23,7 +23,7 @@
 #   [git]  Git
 #
 # [*version*]
-#   The Sentry version to install if using PyPI, defaults to `7.7.0`.
+#   The Sentry version to install if using PyPI, defaults to latest.
 #
 # [*git_revision*]
 #   The Sentry revision to install if using Git, defaults to `master`.
@@ -67,6 +67,9 @@
 # [*url*]
 #   The absolute URL to access Sentry, defaults to `http://localhost:9000`.
 #   Must not have a trailing slash.
+#
+# [*url_path*]
+#   The URL path component, if Sentry is not installed to document root`.
 #
 # [*host*]
 #   The hostname which the webserver should bind to, defaults to `localhost`.
@@ -155,6 +158,7 @@ class sentry(
   $secret_key      = $sentry::params::secret_key,
   $email           = $sentry::params::email,
   $url             = $sentry::params::url,
+  $url_path        = $sentry::params::url_path,
   $host            = $sentry::params::host,
   $port            = $sentry::params::port,
   $workers         = $sentry::params::workers,
@@ -179,6 +183,7 @@ class sentry(
     $git_url,
     $email,
     $url,
+    $url_path,
     $owner,
     $group,
     $host,
@@ -220,11 +225,6 @@ class sentry(
   if ($proxy_enabled or $host != $sentry::params::host) and
       $secret_key == $sentry::params::secret_key {
     notify { 'Secret key unchanged from default, this is a security risk!': }
-  }
-  if $version and (
-      versioncmp($version, $sentry::params::version) < 0 or versioncmp($version, '8.0.0') >= 0
-  ) {
-    notify { "Only Sentry >= ${sentry::params::version}, < 8.0.0 is supported, use at own risk!": }
   }
 
   anchor { 'sentry::begin': } ->

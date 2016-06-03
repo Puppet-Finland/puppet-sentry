@@ -18,7 +18,10 @@ class sentry::install
 
   case $sentry::source_location {
     'pypi': {
-      $pip_install_args = "${pip_install_spec}==${sentry::version}"
+      $pip_install_args = $sentry::version ? {
+        '' => "'${pip_install_spec}<9.0'",
+        default => "${pip_install_spec}==${sentry::version}"
+      }
       $pip_freeze_spec = 'sentry'
     }
     'git': {
@@ -68,6 +71,12 @@ class sentry::install
     owner  => $sentry::owner,
     group  => $sentry::group,
     mode   => '0750',
+  } ->
+  file { $sentry::params::filestore_location:
+    ensure => directory,
+    owner  => $sentry::owner,
+    group  => $sentry::group,
+    mode   => '0770',
   } ->
 
   class { 'sentry::install::database': } ->

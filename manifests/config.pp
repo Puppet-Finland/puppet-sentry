@@ -8,6 +8,7 @@ class sentry::config
   $secret_key     = $sentry::secret_key
   $email          = $sentry::email
   $url            = $sentry::url
+  $url_path       = $sentry::url_path
   $host           = $sentry::host
   $port           = $sentry::port
   $workers        = $sentry::workers
@@ -17,6 +18,8 @@ class sentry::config
   $proxy_enabled  = $sentry::proxy_enabled
   $redis_enabled  = $sentry::redis_enabled
   $extra_config   = $sentry::extra_config
+
+  $filestore_location = $sentry::params::filestore_location
 
   $config = {
     'database' => merge(
@@ -36,6 +39,14 @@ class sentry::config
   file { "${sentry::path}/sentry.conf.py":
     ensure  => present,
     content => template('sentry/sentry.conf.py.erb'),
+    owner   => $sentry::owner,
+    group   => $sentry::group,
+    mode    => '0640',
+  } ->
+
+  file { "${sentry::path}/config.yml":
+    ensure  => present,
+    content => template('sentry/sentry.config.yml.erb'),
     owner   => $sentry::owner,
     group   => $sentry::group,
     mode    => '0640',
