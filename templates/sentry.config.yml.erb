@@ -50,3 +50,12 @@ redis.clusters:
       0:
         host: <%= @config['redis']['host'] %>
         port: <%= @config['redis']['port'] %>
+
+
+################
+# File storage #
+################
+
+filestore.backend: django.core.files.storage.FileSystemStorage
+filestore.options:
+    location: <%= @filestore_location %>
